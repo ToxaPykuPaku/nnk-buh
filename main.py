@@ -54,31 +54,8 @@ DEFAULTS = {'tariff': '139.83', 'days': '31', 'night_shifts': '16', 'holiday_day
             'holiday_night': '0', 'regional': '80', 'northern': '80', 'premium': '40',
             'comp_received': 'Нет', 'compensation': '0', 'advance': '0'}
 
-
-def _storage_dir():
-    """Возвращает каталог, куда можно писать. На ПК — рядом со скриптом,
-    в APK — FLET_APP_STORAGE_DATA."""
-    script_dir = os.path.dirname(os.path.abspath(__file__))
-    try:
-        test = os.path.join(script_dir, '.nnk_write_test')
-        with open(test, 'w') as f:
-            f.write('t')
-        os.remove(test)
-        return script_dir
-    except Exception:
-        pass
-    d = os.getenv("FLET_APP_STORAGE_DATA")
-    if d:
-        try:
-            os.makedirs(d, exist_ok=True)
-            return d
-        except Exception:
-            pass
-    return os.path.expanduser("~")
-
-
-CONFIG = os.path.join(_storage_dir(), 'nnk_buh.json')
-print(f"[ННКБух] Файл настроек: {CONFIG}")
+_storage = os.getenv("FLET_APP_STORAGE_DATA") or os.path.dirname(os.path.abspath(__file__))
+CONFIG = os.path.join(_storage, 'nnk_buh.json')
 
 
 def load():
@@ -88,17 +65,17 @@ def load():
         d = DEFAULTS.copy()
         d.update({k: str(v) for k, v in saved.items() if k in DEFAULTS})
         return d
-    except Exception as e:
-        print(f"[ННКБух] Не удалось прочитать настройки ({e}), используются значения по умолчанию")
+    except Exception:
         return DEFAULTS.copy()
 
 
 def store(d):
     try:
+        os.makedirs(os.path.dirname(CONFIG), exist_ok=True)
         with open(CONFIG, 'w', encoding='utf-8') as f:
             json.dump(d, f, ensure_ascii=False, indent=2)
-    except Exception as e:
-        print(f"[ННКБух] Ошибка сохранения: {e}")
+    except Exception:
+        pass
 
 
 def main(page: ft.Page):
@@ -213,4 +190,4 @@ def main(page: ft.Page):
     render()
 
 
-ft.app(target=main)
+ft.run(main)
