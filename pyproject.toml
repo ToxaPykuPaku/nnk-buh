@@ -1,0 +1,18 @@
+[project]
+name = "nnk-buh"
+version = "1.0.0"
+description = "Расчёт зарплаты ЧОП"
+requires-python = ">=3.9"
+dependencies = ["flet"]
+
+[tool.flet]
+org = "com.nnkbuh"
+product = "ННКБух"
+company = "ННКБух"
+copyright = "© 2026"
+
+[tool.flet.app]
+path = "."
+
+[tool.flet.icons]
+android = "assets/icon.png"
