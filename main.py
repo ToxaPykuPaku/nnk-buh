@@ -93,9 +93,9 @@ def main(page: ft.Page):
         [ft.Radio(value="Да", label="Да"), ft.Radio(value="Нет", label="Нет")],
         alignment=ft.MainAxisAlignment.CENTER))
     box = ft.Container(alignment=ft.Alignment.CENTER)
-    back = ft.ElevatedButton("Назад", on_click=lambda e: nav(-1), disabled=True)
-    nxt = ft.ElevatedButton("Далее", on_click=lambda e: nav(1))
-    rst = ft.ElevatedButton("В начало", on_click=lambda e: restart(), visible=False)
+    back = ft.Button("Назад", on_click=lambda e: nav(-1), disabled=True)
+    nxt = ft.Button("Далее", on_click=lambda e: nav(1))
+    rst = ft.Button("В начало", on_click=lambda e: restart(), visible=False)
     res = ft.Text(selectable=True, size=16, visible=False)
 
     def on_num_change(e):
